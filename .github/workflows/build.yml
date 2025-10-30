@@ -29,9 +29,7 @@ jobs:
       # Add Procursus path (adjust if you have custom scripts there)
       - name: Setup Procursus environment
         run: |
-          # GitHub runners don’t have /opt/procursus by default, so use /usr/local or /opt/homebrew
-          mkdir -p /opt/procursus/bin
-          export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
+          export PATH=/opt/homebrew/bin:$PATH
           export JAVA_HOME=$(/usr/libexec/java_home -v ${{ matrix.version }})
           echo "PATH=$PATH" >> $GITHUB_ENV
           echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
