@@ -24,7 +24,7 @@ jobs:
       # Install Procursus (or any necessary deps)
       - name: Install Procursus dependencies
         run: |
-          brew install coreutils wget tar xz
+          brew install coreutils wget xz
 
       # Add Procursus path (adjust if you have custom scripts there)
       - name: Setup Procursus environment
