@@ -15,16 +15,31 @@ jobs:
       fail-fast: false
 
     name: "Build Java ${{ matrix.version }} for iOS aarch64"
-    runs-on: MacStadium
+    runs-on: macos-latest
     continue-on-error: true
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build with CI build script
+      # Install Procursus (or any necessary deps)
+      - name: Install Procursus dependencies
         run: |
+          brew install coreutils wget tar xz
+
+      # Add Procursus path (adjust if you have custom scripts there)
+      - name: Setup Procursus environment
+        run: |
+          # GitHub runners don’t have /opt/procursus by default, so use /usr/local or /opt/homebrew
+          mkdir -p /opt/procursus/bin
           export PATH=/opt/procursus/bin:/opt/homebrew/bin:$PATH
           export JAVA_HOME=$(/usr/libexec/java_home -v ${{ matrix.version }})
+          echo "PATH=$PATH" >> $GITHUB_ENV
+          echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+      - name: Build with CI build script
+        run: |
+          export PATH=$PATH
+          export JAVA_HOME=$JAVA_HOME
           export BUILD_IOS=1
           export TARGET_VERSION=${{ matrix.version }}
           bash "1_ci_build_arch_aarch64.sh"
